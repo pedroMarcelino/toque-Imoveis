@@ -3,4 +3,4 @@ import propertyController from '../controller/propertyController.js';
 
 const propertyRoute = Router();
 
-propertyRoute.post('/', propertyController.createPropeties)
+propertyRoute.post('/', propertyController.createProperty)
