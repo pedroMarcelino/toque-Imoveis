@@ -1,10 +1,10 @@
 import { Router } from 'express';
 // import authRoutes from './auth.routes.js';
+import propertyRoute from './property.routes.js';
 
 
 const routes = Router();
-
-// routes.use('/auth', authRoutes);
+routes.use('/property', propertyRoute);
 
 
 
