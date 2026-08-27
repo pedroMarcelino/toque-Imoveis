@@ -29,6 +29,18 @@ class propertyController {
         }
     }
 
+    async getProperties(req, res) {
+        try {
+            const getProperties = await propertyService.getProperties();
+            res.status(200).json(getProperties);
+        } catch (error) {
+            return res.status(error.statusCode || 500).json({
+                error: error.message,
+                source: error.source || 'propertyController.CreateProperty'
+            });
+        }
+    }
+
     async updateProperty(req, res) {
         try {
             const { id } = req.params;
@@ -51,6 +63,27 @@ class propertyController {
             return res.status(error.statusCode || 500).json({
                 error: error.message,
                 source: error.source || 'propertyController.CreateProperty'
+            });
+        }
+    }
+    async uploadImages(req, res) {
+        try {
+            console.log(req.files);
+
+            const { id } = req.params;
+
+            const property = await propertyService.uploadPropertyImages(
+                id,
+                req.files
+            );
+
+            return res.status(200).json({
+                message: "Fotos enviadas com sucesso.",
+                images: property.images
+            });
+        } catch (error) {
+            return res.status(400).json({
+                message: error.message
             });
         }
     }

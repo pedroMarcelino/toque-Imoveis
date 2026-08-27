@@ -1,6 +1,7 @@
 import { AppError } from "../util/appError.js";
 import Property from '../model/Property.js';
 
+
 class propertyService {
 
     async createProperty({ data }) {
@@ -18,6 +19,15 @@ class propertyService {
             return property
         } catch (error) {
             throw new AppError(error.message, '403', 'propertyService.getProperty')
+        }
+    }
+
+    async getProperties() {
+        try {
+            const property = Property.find().where({ status: 'disponivel' });
+            return property
+        } catch (error) {
+            throw new AppError(error.message, '403', 'propertyService.getProperties')
         }
     }
 
@@ -50,6 +60,7 @@ class propertyService {
             throw new AppError(error.message, '403', 'propertyService.deleteProperty')
         }
     }
+
 
 }
 

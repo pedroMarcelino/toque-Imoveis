@@ -5,7 +5,9 @@ const propertyRoute = Router();
 
 propertyRoute.post('/', propertyController.createProperty)
 propertyRoute.get('/:id', propertyController.getProperty)
+propertyRoute.get('/', propertyController.getProperties)
 propertyRoute.patch('/:id', propertyController.updateProperty)
 propertyRoute.delete('/:id', propertyController.deleteProperty)
+
 
 export default propertyRoute;
