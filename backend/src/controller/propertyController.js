@@ -31,7 +31,7 @@ class propertyController {
 
     async getProperties(req, res) {
         try {
-            const getProperties = await propertyService.getProperties();
+            const getProperties = await propertyService.getProperties({ filters: req.query });
             res.status(200).json(getProperties);
         } catch (error) {
             return res.status(error.statusCode || 500).json({

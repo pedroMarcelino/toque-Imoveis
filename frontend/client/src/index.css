@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme inline {
+  --font-sans: "DM Sans", sans-serif;
+  --font-display: "Playfair Display", serif;
+  --color-background: oklch(0.98 0.008 230);
+  --color-foreground: oklch(0.22 0.035 240);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.22 0.035 240);
+  --color-primary: oklch(0.38 0.12 240);
+  --color-primary-foreground: oklch(1 0 0);
+  --color-secondary: oklch(0.94 0.025 230);
+  --color-secondary-foreground: oklch(0.28 0.08 240);
+  --color-muted: oklch(0.95 0.012 230);
+  --color-muted-foreground: oklch(0.5 0.04 240);
+  --color-accent: oklch(0.78 0.08 205);
+  --color-accent-foreground: oklch(0.2 0.04 235);
+  --color-border: oklch(0.89 0.02 230);
+  --color-input: oklch(0.89 0.02 230);
+  --color-ring: oklch(0.48 0.13 240);
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+}
+
+:root { font-family: "DM Sans", sans-serif; color: oklch(0.22 0.035 240); background: oklch(0.98 0.008 230); font-synthesis: none; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; }
+button, a { transition: transform .18s cubic-bezier(.23,1,.32,1), background-color .18s ease, color .18s ease, box-shadow .18s ease; }
+button:active, a:active { transform: scale(.98); }
+.font-display { font-family: "Playfair Display", serif; }
+.container { width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: 1.25rem; }
+.surface { background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.8); box-shadow: 0 20px 60px rgba(28,58,90,.08); backdrop-filter: blur(16px); }
+.hero-grid { background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); background-size: 48px 48px; }

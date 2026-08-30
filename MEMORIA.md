@@ -15,6 +15,9 @@ Padrao em camadas: routes -> controller -> service -> model.
 Autenticacao: JWT (7 dias) + bcrypt (10 rounds).
 Upload de imagens: Cloudinary via multer (memory storage) + streamifier.
 
+Frontend em React 19 + Vite 7 + Tailwind 4 + TanStack Query 5 + wouter (pt-BR/BRL),
+conectado ao backend via REST. Mais detalhes em FRONTEND.md.
+
 ## Estrutura (backend/src)
 - server.js / app.js - boot e config do Express
 - config/ - database.js, cloudinary.js, multer.js
@@ -37,6 +40,12 @@ Upload de imagens: Cloudinary via multer (memory storage) + streamifier.
 - Fluxo completo testado OK em 2026-08-30: registro, login, criar imovel, upload .jpg,
   rejeicao .txt (400), sem token (401), token invalido (401), rota inexistente (404),
   senha errada (401)
+- GET /property estendido com filtros/paginacao (search, tipo, finalidade, cidade,
+  quartos, minPreco, maxPreco, status=disponivel por padrao, page, pageSize<=50) - feito nesta sessao
+- Frontend reconstruido (26-08 a 30-08): template full-stack removido (server/shared/drizzle/trpc),
+  nova altura em lib/ + pages/ + components/, App.tsx dividido em rotas wouter
+- Frontend compila: npm run check e npm run build OK em 2026-08-30
+- Smoke test 2026-08-30: backend 3000 respondendo, vite 5173 servindo rotas, CORS ok
 
 ## Convencoes
 - Comentarios em portugues

@@ -24,10 +24,71 @@ class propertyService {
         }
     }
 
-    async getProperties() {
+    async getProperties({ filters = {} } = {}) {
         try {
-            const property = await Property.find().where({ status: 'disponivel' });
-            return property
+            const {
+                search,
+                tipo,
+                finalidade,
+                cidade,
+                quartos,
+                minPreco,
+                maxPreco,
+                status = 'disponivel',
+                page = 1,
+                pageSize = 9
+            } = filters;
+
+            const query = {
+                isActive: true
+            };
+
+            if (status !== 'todos') {
+                query.status = status;
+            }
+
+            if (search) {
+                const regex = new RegExp(search, 'i');
+                query.$or = [
+                    { title: regex },
+                    { description: regex },
+                    { 'address.city': regex },
+                    { 'address.neighborhood': regex }
+                ];
+            }
+
+            if (tipo) {
+                query.type = tipo;
+            }
+
+            if (finalidade) {
+                query.purpose = finalidade;
+            }
+
+            if (cidade) {
+                query['address.city'] = { $regex: new RegExp(cidade, 'i') };
+            }
+
+            if (quartos) {
+                query.bedrooms = { $gte: Number(quartos) };
+            }
+
+            if (minPreco || maxPreco) {
+                query.price = {};
+                if (minPreco) query.price.$gte = Number(minPreco);
+                if (maxPreco) query.price.$lte = Number(maxPreco);
+            }
+
+            const pageNum = Math.max(Number(page) || 1, 1);
+            const sizeNum = Math.min(Math.max(Number(pageSize) || 9, 1), 50);
+
+            const total = await Property.countDocuments(query);
+            const properties = await Property.find(query)
+                .sort({ createdAt: -1 })
+                .skip((pageNum - 1) * sizeNum)
+                .limit(sizeNum);
+
+            return { properties, total, page: pageNum, pageSize: sizeNum };
         } catch (error) {
             throw new AppError(error.message, '403', 'propertyService.getProperties')
         }

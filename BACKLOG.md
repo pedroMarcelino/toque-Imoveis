@@ -20,9 +20,12 @@
 - [ ] Adicionar campo `createdBy` referenciando User nos imóveis
 
 ## Melhorias
-- [ ] Adicionar paginação/filtros no getProperties
 - [ ] Limpar import morto de auth.routes.js no index de rotas
 
 ## Concluidos
 - [x] middleware global de erros + rota 404 no app.js (retorna JSON)
 - [x] fileFilter do multer aceita por extensao ou mimetype (uploads com mimetype octet-stream)
+- [x] Adicionar paginação/filtros no getProperties (search, tipo, finalidade, cidade,
+      quartos, minPreco, maxPreco, status, page, pageSize<=50) — feito em 2026-08-30
+- [x] Frontend conectado ao backend (ver FRONTEND.md): template full-stack removido,
+      App.tsx dividido em rotas (Home, Catalog, Detail, Admin), admin = qualquer usuário logado
