@@ -8,7 +8,7 @@
 ## Backend - Correções
 - [ ] Corrigir bug de copy-paste no controller (source sempre "CreateProperty")
 - [ ] Ajustar status HTTP (criar = 201, deletar = 204)
-- [ ] Adicionar middleware global de erros + rota 404 no app.js
+- [x] Adicionar middleware global de erros + rota 404 no app.js
 - [ ] Mover URI do MongoDB para variável de ambiente (remover hardcode)
 
 ## Configuração
@@ -22,3 +22,7 @@
 ## Melhorias
 - [ ] Adicionar paginação/filtros no getProperties
 - [ ] Limpar import morto de auth.routes.js no index de rotas
+
+## Concluidos
+- [x] middleware global de erros + rota 404 no app.js (retorna JSON)
+- [x] fileFilter do multer aceita por extensao ou mimetype (uploads com mimetype octet-stream)

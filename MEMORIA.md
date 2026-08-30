@@ -32,6 +32,11 @@ Upload de imagens: Cloudinary via multer (memory storage) + streamifier.
 - .env.example incompleto (falta Cloudinary)
 - isActive definido no model mas nao utilizado
 - getProperty/getProperties ja corrigidos (await) - feito pelo usuario
+- Multer aceita imagem por extensao ou mimetype (corrige uploads com mimetype octet-stream)
+- Middleware global de erros + 404 no app.js retornam JSON
+- Fluxo completo testado OK em 2026-08-30: registro, login, criar imovel, upload .jpg,
+  rejeicao .txt (400), sem token (401), token invalido (401), rota inexistente (404),
+  senha errada (401)
 
 ## Convencoes
 - Comentarios em portugues
