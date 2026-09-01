@@ -9,7 +9,9 @@ Qualquer usuário autenticado é tratado como administrador.
 1. Subir o backend: `cd backend && npm run start` (porta 3000).
 2. Subir o frontend: `cd frontend && npm run dev` (porta 5173).
 3. Opcional: definir `VITE_API_URL` (default `http://localhost:3000`) no
-   frontend para apontar para outro backend (ex: produção).
+   frontend para apontar para outro backend (ex: produção). Em produção usa-se
+   `frontend/.env.production` (`VITE_API_URL=https://toque-imoveis.onrender.com`),
+   commitado e injetado no build de produção (`.env`/`.env.local` são ignorados pelo git).
 
 ## Estrutura (frontend/client/src)
 - `lib/` - camada de integração com o backend
