@@ -21,6 +21,7 @@
 
 ## Melhorias
 - [ ] Limpar import morto de auth.routes.js no index de rotas
+- [ ] Frontend: permitir visualizar mais de 3 fotos por imóvel (galeria/detalhe)
 
 ## Concluidos
 - [x] middleware global de erros + rota 404 no app.js (retorna JSON)
