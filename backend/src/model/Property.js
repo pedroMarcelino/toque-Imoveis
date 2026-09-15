@@ -97,6 +97,11 @@ const propertySchema = new mongoose.Schema(
                 trim: true
             },
 
+            complement: {
+                type: String,
+                trim: true
+            },
+
             neighborhood: {
                 type: String,
                 required: true,

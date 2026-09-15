@@ -46,14 +46,26 @@ conectado ao backend via REST. Mais detalhes em FRONTEND.md.
   nova altura em lib/ + pages/ + components/, App.tsx dividido em rotas wouter
 - Frontend compila: npm run check e npm run build OK em 2026-08-30
 - Smoke test 2026-08-30: backend 3000 respondendo, vite 5173 servindo rotas, CORS ok
+- Pagina admin de gestao e criacao de imoveis pronta (15-09): AdminDashboard (lista status=todos,
+  editar/excluir com confirmacao) + AdminForm (criar/editar + upload imagens Cloudinary), mobile-first;
+  rotas /admin/novo e /admin/editar/:id protegidas por login (Redirect p/ /admin)
+- Backend: CRUD de imoveis agora exige token (authMiddleware em criar/editar/deletar + upload);
+  status HTTP corrigidos (criar=201, deletar=204) e source do controller corrigido (fim do copy-paste)
+- Auth: sessao via localStorage (toque.token e toque.user); expiração do JWT checada no boot
+  (authService.getUser) e 401 limpa a sessao + evento 'toque:session-expired' (useAuth escuta)
+- Cadastro exige confirmacao de senha (front zod superRefine + backend userService)
 
 ## Convencoes
 - Comentarios em portugues
 - ESM ("type": "module")
 - .env vars: DB_USER, DB_PASSWORD, PORT, JWT_SECRET, CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
-- Dev com nodemon (npm start)
+- Dev: `npm run dev` (nodemon src/server.js); start: `npm start` (node src/server.js)
 - O usuario me chama de "funcy"
+- Forms (regra geral, aplicada em todos os forms): submit desabilitado ate todos
+  os campos obrigatorios preenchidos e validos; validacao ao vivo com erro em
+  vermelho sob o campo; cadastro exige confirmacao de senha validada no front e
+  no backend.
 
 ## Pendente antes de publicar
 (ver BACKLOG.md)

@@ -3,9 +3,13 @@ import User from '../model/User.js';
 import { signToken } from '../util/token.js';
 
 class userService {
-    async create({ name, email, password }) {
+    async create({ name, email, password, confirmPassword }) {
         if (!email || !password) {
             throw new Error('Email e senha são obrigatórios');
+        }
+
+        if (!confirmPassword || confirmPassword !== password) {
+            throw new Error('As senhas não coincidem');
         }
 
         const emailExists = await User.findOne({ email });

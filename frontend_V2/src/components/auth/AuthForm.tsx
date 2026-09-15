@@ -8,7 +8,7 @@ import { Input } from '../ui/Input'
 import { Label } from '../ui/Label'
 import { login, register } from '../../services/authService'
 import { loginSchema, registerSchema } from '../../types/auth'
-import type { AuthUser } from '../../types/auth'
+import type { AuthUser, LoginInput, RegisterInput } from '../../types/auth'
 
 type Mode = 'login' | 'register'
 
@@ -16,6 +16,7 @@ interface FieldErrors {
   name?: string
   email?: string
   password?: string
+  confirmPassword?: string
 }
 
 interface AuthFormProps {
@@ -28,38 +29,48 @@ export default function AuthForm({ onSuccess, defaultMode = 'login' }: AuthFormP
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [errors, setErrors] = useState<FieldErrors>({})
   const [loading, setLoading] = useState(false)
 
   const switchMode = (next: Mode) => {
     if (next === mode) return
     setMode(next)
-    setErrors({})
     setPassword('')
+    setConfirmPassword('')
   }
+
+  const currentInput =
+    mode === 'login'
+      ? { email, password }
+      : { name, email, password, confirmPassword }
+  const currentSchema = mode === 'login' ? loginSchema : registerSchema
+
+  const currentErrors: FieldErrors = {}
+  const parsed = currentSchema.safeParse(currentInput)
+  if (!parsed.success) {
+    for (const issue of parsed.error.issues) {
+      const field = issue.path[0] as keyof FieldErrors
+      if (field && !currentErrors[field]) currentErrors[field] = issue.message
+    }
+  }
+
+  const hasErrors = Object.keys(currentErrors).length > 0
+  const allFilled = Object.values(currentInput).every((value) =>
+    typeof value === 'string' ? value.trim().length > 0 : true,
+  )
+  const canSubmit = allFilled && !hasErrors
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (loading) return
+    if (loading || !canSubmit || !parsed.success) return
 
-    const input = mode === 'login' ? { email, password } : { name, email, password }
-    const parsed = (mode === 'login' ? loginSchema : registerSchema).safeParse(input)
-
-    if (!parsed.success) {
-      const next: FieldErrors = {}
-      for (const issue of parsed.error.issues) {
-        const field = issue.path[0] as keyof FieldErrors
-        if (field && !next[field]) next[field] = issue.message
-      }
-      setErrors(next)
-      return
-    }
-
-    setErrors({})
     setLoading(true)
     try {
-      const user = mode === 'login' ? await login(parsed.data) : await register(parsed.data)
+      const user =
+        mode === 'login'
+          ? await login(parsed.data as LoginInput)
+          : await register(parsed.data as RegisterInput)
       toast.success(mode === 'login' ? 'Login realizado' : 'Conta criada')
       onSuccess(user)
     } catch (error) {
@@ -94,7 +105,9 @@ export default function AuthForm({ onSuccess, defaultMode = 'login' }: AuthFormP
               autoComplete="name"
               enterKeyHint="next"
             />
-            {errors.name && <p className="mt-1 text-xs font-medium text-red-600">{errors.name}</p>}
+            {name.trim() && currentErrors.name && (
+              <p className="mt-1 text-xs font-medium text-red-600">{currentErrors.name}</p>
+            )}
           </div>
         )}
 
@@ -110,7 +123,9 @@ export default function AuthForm({ onSuccess, defaultMode = 'login' }: AuthFormP
             inputMode="email"
             enterKeyHint="next"
           />
-          {errors.email && <p className="mt-1 text-xs font-medium text-red-600">{errors.email}</p>}
+          {email.trim() && currentErrors.email && (
+            <p className="mt-1 text-xs font-medium text-red-600">{currentErrors.email}</p>
+          )}
         </div>
 
         <div>
@@ -123,7 +138,7 @@ export default function AuthForm({ onSuccess, defaultMode = 'login' }: AuthFormP
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-              enterKeyHint="go"
+              enterKeyHint={mode === 'register' ? 'next' : 'go'}
               className="pr-12"
             />
             <button
@@ -135,14 +150,34 @@ export default function AuthForm({ onSuccess, defaultMode = 'login' }: AuthFormP
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          {errors.password ? (
-            <p className="mt-1 text-xs font-medium text-red-600">{errors.password}</p>
+          {password.trim() && currentErrors.password ? (
+            <p className="mt-1 text-xs font-medium text-red-600">{currentErrors.password}</p>
           ) : mode === 'register' ? (
             <p className="mt-1 text-xs text-slate-400">Mínimo de 6 caracteres.</p>
           ) : null}
         </div>
 
-        <Button type="submit" size="lg" disabled={loading} className="w-full">
+        {mode === 'register' && (
+          <div>
+            <Label htmlFor="confirmPassword">Confirmar senha</Label>
+            <Input
+              id="confirmPassword"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              autoComplete="new-password"
+              enterKeyHint="go"
+            />
+            {confirmPassword.trim() && currentErrors.confirmPassword && (
+              <p className="mt-1 text-xs font-medium text-red-600">
+                {currentErrors.confirmPassword}
+              </p>
+            )}
+          </div>
+        )}
+
+        <Button type="submit" size="lg" disabled={!canSubmit || loading} className="w-full">
           {mode === 'login' ? (
             <>
               <LogIn size={17} /> Entrar

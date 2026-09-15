@@ -7,11 +7,11 @@ class propertyController {
         try {
             const data = req.body;
             const create = await propertyService.createProperty({ data })
-            res.status(200).json(create)
+            res.status(201).json(create)
         } catch (error) {
             return res.status(error.statusCode || 500).json({
                 error: error.message,
-                source: error.source || 'propertyController.CreateProperty'
+                source: error.source || 'propertyController.createProperty'
             });
         }
     }
@@ -24,7 +24,7 @@ class propertyController {
         } catch (error) {
             return res.status(error.statusCode || 500).json({
                 error: error.message,
-                source: error.source || 'propertyController.CreateProperty'
+                source: error.source || 'propertyController.getProperty'
             });
         }
     }
@@ -36,7 +36,7 @@ class propertyController {
         } catch (error) {
             return res.status(error.statusCode || 500).json({
                 error: error.message,
-                source: error.source || 'propertyController.CreateProperty'
+                source: error.source || 'propertyController.getProperties'
             });
         }
     }
@@ -49,7 +49,7 @@ class propertyController {
         } catch (error) {
             return res.status(error.statusCode || 500).json({
                 error: error.message,
-                source: error.source || 'propertyController.CreateProperty'
+                source: error.source || 'propertyController.updateProperty'
             });
         }
     }
@@ -57,12 +57,12 @@ class propertyController {
     async deleteProperty(req, res) {
         try {
             const id = req.params.id;
-            const deleteProperty = await propertyService.deleteProperty(id);
-            return res.status(200).json(deleteProperty)
+            await propertyService.deleteProperty(id);
+            return res.status(204).end();
         } catch (error) {
             return res.status(error.statusCode || 500).json({
                 error: error.message,
-                source: error.source || 'propertyController.CreateProperty'
+                source: error.source || 'propertyController.deleteProperty'
             });
         }
     }

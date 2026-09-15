@@ -28,12 +28,12 @@ Qualquer usuário autenticado é tratado como administrador.
   - `Catalog.tsx` - lista com filtros e paginação
   - `Detail.tsx` - imóvel individual (galeria, specs, contato/WhatsApp)
   - `Admin.tsx` - gate de autenticação (login/registro) para a área profissional
-  - `AdminDashboard.tsx` - visão geral (contadores, lista com status=todos, CRUD)
-  - `AdminForm.tsx` - formulário criar/editar + upload de imagens
+  - `AdminDashboard.tsx` - gestão de imóveis (lista status=todos, editar, excluir com confirmação, novo)
+  - `AdminForm.tsx` - criar/editar imóvel + upload de imagens (multi, Cloudinary)
   - `NotFound.tsx` - 404
 - `components/layout/` - Brand, Header, Footer
 - `components/property/` - PropertyCard, SearchBar, EmptyState
-- `components/ui/` - kit shadcn/ui (não modificado)
+- `components/ui/` - kit shadcn/ui + `Select` e `Textarea` (não modificado)
 - `contexts/ThemeContext.tsx` - tema claro/escuro (custom, sem next-themes)
 - `main.tsx` - QueryClientProvider
 - `App.tsx` - rotas (wouter) + ErrorBoundary + ThemeProvider + Toaster
@@ -45,6 +45,9 @@ Qualquer usuário autenticado é tratado como administrador.
 | `/imoveis` | Catalog (aceita `?search=`) |
 | `/imoveis/:id` | Detail |
 | `/admin` | Admin (login/registro → dashboard) |
+| `/admin/novo` | AdminForm (criar imóvel) — requer login |
+| `/admin/editar/:id` | AdminForm (editar imóvel) — requer login |
+| `/admin/dashboard` | Admin |
 | qualquer outra | NotFound |
 
 ## Convenções
@@ -55,6 +58,13 @@ Qualquer usuário autenticado é tratado como administrador.
   header `Authorization: Bearer <token>`.
 - Valores numéricos (preço, área, quartos etc.) vindos do backend são tratados
   como número (R$ 1.000,00 por exemplo) — sem notação EUR (padrão antigo removed).
+- **Forms (regra geral - gravar em todo form):**
+  - Botão de submit fica `disabled` até todos os campos obrigatórios estarem
+    preenchidos e válidos (evita requisições atoa; `disabled={!canSubmit || loading}`).
+  - Validação ao vivo com zod: erros de formato (email, senha, etc.) aparecem em
+    vermelho (`text-red-600`) embaixo do campo, mostrados quando o campo tem conteúdo.
+  - Registrar (register) exige `confirmPassword` (confirmação de senha), validada
+    no front (zod `superRefine`) e também no backend (service) — "As senhas não coincidem".
 
 ## Comandos
 - `npm run dev` - dev server (Vite)
@@ -64,5 +74,7 @@ Qualquer usuário autenticado é tratado como administrador.
 - `npm run format` - prettier
 
 ## Pendências do frontend
+- Telas de catálogo (`Catalog`), detalhe (`Detail`) e home (`Home`) ainda são "em construção"
+  (backend já tem tudo; falta consumir no front).
 - Verificar se `hero-grid` tem definição no CSS global (somente estética).
 - Sem página de contato própria; contato direto do rodapé/WhatsApp/mailto.

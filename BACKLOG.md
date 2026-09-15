@@ -1,13 +1,13 @@
 # Tarefas antes de publicar
 
 ## Segurança
-- [ ] Adicionar authMiddleware nas rotas de CRUD de imóveis (criar/editar/deletar)
+- [x] Adicionar authMiddleware nas rotas de CRUD de imóveis (criar/editar/deletar) — feito em 15-09
 - [ ] Remover hash de senha das respostas de create/login do usuário
 - [ ] Adicionar validação de ID (isValidId) antes de queries no service
 
 ## Backend - Correções
-- [ ] Corrigir bug de copy-paste no controller (source sempre "CreateProperty")
-- [ ] Ajustar status HTTP (criar = 201, deletar = 204)
+- [x] Corrigir bug de copy-paste no controller (source sempre "CreateProperty") — feito em 15-09
+- [x] Ajustar status HTTP (criar = 201, deletar = 204) — feito em 15-09
 - [x] Adicionar middleware global de erros + rota 404 no app.js
 - [ ] Mover URI do MongoDB para variável de ambiente (remover hardcode)
 
@@ -21,7 +21,9 @@
 
 ## Melhorias
 - [ ] Limpar import morto de auth.routes.js no index de rotas
-- [ ] Frontend: permitir visualizar mais de 3 fotos por imóvel (galeria/detalhe)
+- [x] Frontend: página de criação e gestão de imóveis (AdminForm + AdminDashboard) — feito em 15-09
+- [ ] Frontend: montar telas de catálogo, detalhe (galeria com mais de 3 fotos) e home
+      consumindo o backend (hoje "em construção")
 
 ## Concluidos
 - [x] middleware global de erros + rota 404 no app.js (retorna JSON)

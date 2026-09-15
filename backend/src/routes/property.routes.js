@@ -5,11 +5,11 @@ import upload from '../config/multer.js';
 
 const propertyRoute = Router();
 
-propertyRoute.post('/', propertyController.createProperty)
+propertyRoute.post('/', authMiddleware, propertyController.createProperty)
 propertyRoute.get('/:id', propertyController.getProperty)
 propertyRoute.get('/', propertyController.getProperties)
-propertyRoute.patch('/:id', propertyController.updateProperty)
-propertyRoute.delete('/:id', propertyController.deleteProperty)
+propertyRoute.patch('/:id', authMiddleware, propertyController.updateProperty)
+propertyRoute.delete('/:id', authMiddleware, propertyController.deleteProperty)
 propertyRoute.patch('/:id/images', authMiddleware, upload.array('images', 10), propertyController.uploadImages)
 
 

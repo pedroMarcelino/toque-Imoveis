@@ -11,6 +11,7 @@ export const propertyStatusSchema = z.enum(PROPERTY_STATUSES)
 const addressSchema = z.object({
   street: z.string().optional(),
   number: z.string().optional(),
+  complement: z.string().optional(),
   neighborhood: z.string(),
   city: z.string(),
   state: z.string(),

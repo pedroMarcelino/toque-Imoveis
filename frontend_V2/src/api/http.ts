@@ -1,4 +1,4 @@
-import { API_BASE_URL, STORAGE_KEYS } from '../config'
+import { API_BASE_URL, STORAGE_KEYS, SESSION_EXPIRED_EVENT } from '../config'
 
 export function getToken(): string | null {
   try {
@@ -22,6 +22,16 @@ export function clearToken(): void {
   } catch {
     /* storage indisponível */
   }
+}
+
+function clearSessionStorage(): void {
+  clearToken()
+  try {
+    localStorage.removeItem(STORAGE_KEYS.user)
+  } catch {
+    /* storage indisponível */
+  }
+  window.dispatchEvent(new CustomEvent(SESSION_EXPIRED_EVENT))
 }
 
 export class ApiError extends Error {
@@ -57,6 +67,11 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     } catch {
       /* corpo não-JSON */
     }
+
+    if (res.status === 401) {
+      clearSessionStorage()
+    }
+
     throw new ApiError(message, res.status)
   }
 

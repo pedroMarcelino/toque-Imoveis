@@ -1,4 +1,4 @@
-import { api, setToken, clearToken } from '../api/http'
+import { api, setToken, clearToken, getToken } from '../api/http'
 import type { AuthUser, RegisterInput, LoginInput } from '../types/auth'
 import { authResponseSchema } from '../types/auth'
 import { STORAGE_KEYS } from '../config'
@@ -10,6 +10,21 @@ function persistUser(user: AuthUser): AuthUser {
     /* storage indisponível */
   }
   return user
+}
+
+function isTokenExpired(token: string): boolean {
+  try {
+    const base64 = token
+      .split('.')[1]
+      ?.replace(/-/g, '+')
+      .replace(/_/g, '/')
+    if (!base64) return true
+
+    const payload = JSON.parse(atob(base64)) as { exp?: number }
+    return typeof payload.exp !== 'number' || payload.exp * 1000 <= Date.now()
+  } catch {
+    return true
+  }
 }
 
 export async function login(input: LoginInput): Promise<AuthUser> {
@@ -27,6 +42,12 @@ export async function register(input: RegisterInput): Promise<AuthUser> {
 }
 
 export function getUser(): AuthUser | null {
+  const token = getToken()
+  if (token && isTokenExpired(token)) {
+    logout()
+    return null
+  }
+
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.user)
     return raw ? (JSON.parse(raw) as AuthUser) : null

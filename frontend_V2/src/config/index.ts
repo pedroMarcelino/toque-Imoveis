@@ -5,6 +5,8 @@ export const STORAGE_KEYS = {
   user: 'toque.user',
 } as const
 
+export const SESSION_EXPIRED_EVENT = 'toque:session-expired'
+
 export const CONTACT = {
   phone: '+55 11 3000-0000',
   email: 'contato@toqueimoveis.com.br',

@@ -1,14 +1,25 @@
 import { z } from 'zod'
 
-export const registerSchema = z.object({
-  name: z.string().trim().optional(),
-  email: z.string().trim().email(),
-  password: z.string().min(6),
-})
+export const registerSchema = z
+  .object({
+    name: z.string().trim().min(1, 'Informe seu nome'),
+    email: z.string().trim().min(1, 'Informe seu email').email('Email inválido'),
+    password: z.string().min(6, 'Senha possui menos de 6 caracteres'),
+    confirmPassword: z.string().min(6, 'Senha possui menos de 6 caracteres'),
+  })
+  .superRefine(({ password, confirmPassword }, ctx) => {
+    if (password !== confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['confirmPassword'],
+        message: 'As senhas não coincidem',
+      })
+    }
+  })
 
 export const loginSchema = z.object({
-  email: z.string().trim().email(),
-  password: z.string().min(1),
+  email: z.string().trim().min(1, 'Informe seu email').email('Email inválido'),
+  password: z.string().min(1, 'Informe sua senha'),
 })
 
 export const authUserSchema = z.object({
