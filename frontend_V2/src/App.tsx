@@ -1,6 +1,7 @@
 import { Route, Switch, Redirect } from 'wouter'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
+import ScrollToTop from './components/layout/ScrollToTop'
 import Home from './pages/Home'
 import Catalog from './pages/Catalog'
 import Detail from './pages/Detail'
@@ -18,6 +19,7 @@ function ProtectedAdmin({ children }: { children: React.ReactNode }) {
 function App() {
   return (
     <div className="flex min-h-svh flex-col">
+      <ScrollToTop />
       <Header />
       <main className="flex-1">
         <Switch>

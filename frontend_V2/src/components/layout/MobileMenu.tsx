@@ -6,8 +6,6 @@ import { cn } from '../../lib/cn'
 
 const NAV_ITEMS = [
   { label: 'Início', href: '/' },
-  { label: 'Imóveis', href: '/imoveis' },
-  { label: 'Nossa essência', href: '/#sobre' },
   { label: 'Contato', href: '/#contato' },
 ]
 

@@ -7,15 +7,4 @@ export const STORAGE_KEYS = {
 
 export const SESSION_EXPIRED_EVENT = 'toque:session-expired'
 
-export const CONTACT = {
-  phone: '+55 11 3000-0000',
-  email: 'contato@toqueimoveis.com.br',
-  address: 'Av. Paulista, 1000',
-  city: '01310-100 São Paulo, SP',
-  whatsapp: '551130000000',
-  socials: {
-    instagram: 'https://instagram.com',
-    facebook: 'https://facebook.com',
-    linkedin: 'https://linkedin.com',
-  },
-} as const
+export { CONTACT } from './contact'

@@ -630,7 +630,7 @@ export default function AdminForm({ id }: { id?: string }) {
             >
               <UploadCloud size={24} />
               <span className="font-semibold">Toque para selecionar fotos</span>
-              <span className="text-xs">JPG/PNG · até 10 imagens</span>
+              <span className="text-xs">JPG/PNG · até 10 fotos por imóvel</span>
             </label>
             <Input
               id="images"

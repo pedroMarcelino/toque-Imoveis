@@ -135,6 +135,16 @@ class propertyService {
             throw new AppError('Imóvel não encontrado', '404', 'propertyService.uploadPropertyImages');
         }
 
+        const MAX_TOTAL_IMAGES = Number(process.env.MAX_TOTAL_IMAGES) || 10;
+
+        if (property.images.length + files.length > MAX_TOTAL_IMAGES) {
+            throw new AppError(
+                `Limite de ${MAX_TOTAL_IMAGES} fotos por imóvel (o imóvel já tem ${property.images.length})`,
+                '400',
+                'propertyService.uploadPropertyImages'
+            );
+        }
+
         const uploads = files.map((file) => {
             return new Promise((resolve, reject) => {
                 const stream = cloudinary.uploader.upload_stream(

@@ -1,11 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
 import * as propertyService from '../services/propertyService'
-import type { PropertyFilters } from '../types/property'
+import type { PropertyFilters, PropertyListResponse } from '../types/property'
 
-export function useProperties(filters: PropertyFilters = {}) {
+type PropertiesQueryOptions = Omit<UseQueryOptions<PropertyListResponse>, 'queryKey' | 'queryFn'>
+
+export function useProperties(filters: PropertyFilters = {}, options?: PropertiesQueryOptions) {
   return useQuery({
     queryKey: ['properties', filters],
     queryFn: () => propertyService.getProperties(filters),
+    ...options,
   })
 }
 

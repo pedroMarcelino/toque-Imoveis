@@ -11,12 +11,6 @@ export default function Header() {
           <Link href="/" className="hover:text-primary">
             Início
           </Link>
-          <Link href="/imoveis" className="hover:text-primary">
-            Imóveis
-          </Link>
-          <a href="/#sobre" className="hover:text-primary">
-            Nossa essência
-          </a>
           <a href="/#contato" className="hover:text-primary">
             Contato
           </a>

@@ -3,6 +3,8 @@ import { AppError } from '../util/appError.js';
 
 const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg', 'avif'];
 
+export const MAX_IMAGES_PER_UPLOAD = Number(process.env.MAX_IMAGES_PER_UPLOAD) || 10;
+
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
@@ -22,7 +24,7 @@ const upload = multer({
     fileFilter,
     limits: {
         fileSize: 5 * 1024 * 1024,
-        files: 10
+        files: MAX_IMAGES_PER_UPLOAD
     }
 });
 
