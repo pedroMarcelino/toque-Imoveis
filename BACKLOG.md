@@ -2,8 +2,10 @@
 
 ## Segurança
 - [x] Adicionar authMiddleware nas rotas de CRUD de imóveis (criar/editar/deletar) — feito em 15-09
-- [ ] Remover hash de senha das respostas de create/login do usuário
+- [x] Remover hash de senha das respostas de create/login do usuário — feito em 21-09
 - [ ] Adicionar validação de ID (isValidId) antes de queries no service
+- [x] Aprovação de usuários: registro não loga (isApproved=false), login 403 até aprovação,
+      escrita de imóveis exige aprovado (requireApproved) — feito em 21-09
 
 ## Backend - Correções
 - [x] Corrigir bug de copy-paste no controller (source sempre "CreateProperty") — feito em 15-09
@@ -22,6 +24,8 @@
 ## Melhorias
 - [ ] Limpar import morto de auth.routes.js no index de rotas
 - [x] Frontend: página de criação e gestão de imóveis (AdminForm + AdminDashboard) — feito em 15-09
+- [x] Frontend: deletar imagem de imóvel (DELETE /property/:id/images/:imageId + X nas fotos do AdminForm) — feito em 21-09
+- [x] Frontend: seção Usuários (aprovar cadastros) no AdminDashboard — feito em 21-09
 - [ ] Frontend: montar telas de catálogo, detalhe (galeria com mais de 3 fotos) e home
       consumindo o backend (hoje "em construção")
 

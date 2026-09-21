@@ -1,5 +1,6 @@
 import { useAuth } from '../hooks/useAuth'
 import AuthForm from '../components/auth/AuthForm'
+import PendingApproval from '../components/auth/PendingApproval'
 import AdminDashboard from './AdminDashboard'
 
 export default function Admin() {
@@ -11,6 +12,10 @@ export default function Admin() {
         <AuthForm onSuccess={setUser} />
       </div>
     )
+  }
+
+  if (user && !user.isApproved) {
+    return <PendingApproval onLogout={logout} />
   }
 
   return <AdminDashboard user={user!} logout={logout} />

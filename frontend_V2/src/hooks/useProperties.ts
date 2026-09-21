@@ -59,3 +59,14 @@ export function useUploadPropertyImages() {
     },
   })
 }
+
+export function useDeletePropertyImage() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, imageId }: { id: string; imageId: string }) =>
+      propertyService.deletePropertyImage(id, imageId),
+    onSuccess: (_data, vars) => {
+      qc.invalidateQueries({ queryKey: ['property', vars.id] })
+    },
+  })
+}

@@ -40,3 +40,8 @@ export async function uploadPropertyImages(id: string, files: File[]): Promise<{
   files.forEach((file) => formData.append('images', file))
   return api.uploadFormData(`/property/${id}/images`, formData)
 }
+
+export async function deletePropertyImage(id: string, imageId: string): Promise<Property> {
+  const data = await api.delete<unknown>(`/property/${id}/images/${imageId}`)
+  return propertySchema.parse(data)
+}

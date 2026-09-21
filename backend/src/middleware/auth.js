@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import User from '../model/User.js';
 
 export function authMiddleware(req, res, next) {
     const authHeader = req.headers.authorization;
@@ -24,5 +25,22 @@ export function authMiddleware(req, res, next) {
         next();
     } catch (error) {
         return res.status(401).json({ message: 'Sessão inválida ou expirada' });
+    }
+}
+
+export async function requireApproved(req, res, next) {
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user || !user.isApproved) {
+            return res.status(403).json({
+                message: 'Acesso restrito a usuários aprovados'
+            });
+        }
+
+        req.user.isApproved = true;
+        next();
+    } catch (error) {
+        return res.status(500).json({ message: 'Erro ao validar acesso' });
     }
 }

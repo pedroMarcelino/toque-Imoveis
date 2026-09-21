@@ -21,6 +21,7 @@ import {
   useCreateProperty,
   useUpdateProperty,
   useUploadPropertyImages,
+  useDeletePropertyImage,
 } from '../hooks/useProperties'
 import { label } from '../lib/labels'
 import { buscarCep, formatCep, sanitizeCep } from '../lib/cep'
@@ -145,6 +146,7 @@ export default function AdminForm({ id }: { id?: string }) {
   const createProperty = useCreateProperty()
   const updateProperty = useUpdateProperty()
   const uploadImages = useUploadPropertyImages()
+  const deleteImage = useDeletePropertyImage()
 
   const [form, setForm] = useState<FormState>(EMPTY_FORM)
   const [files, setFiles] = useState<File[]>([])
@@ -232,6 +234,20 @@ export default function AdminForm({ id }: { id?: string }) {
 
   const removePendingFile = (index: number) =>
     setFiles((prev) => prev.filter((_, i) => i !== index))
+
+  const handleDeleteImage = (image: Property['images'][number]) => {
+    if (!id || !image._id || deleteImage.isPending) return
+    setExistingImages((prev) => prev.filter((img) => img._id !== image._id))
+    deleteImage.mutate(
+      { id, imageId: image._id },
+      {
+        onError: (error) => {
+          toast.error(error instanceof Error ? error.message : 'Erro ao remover imagem')
+          setExistingImages((prev) => (property?.images?.length ? property.images : prev))
+        },
+      },
+    )
+  }
 
   const searchCep = async (digits: string) => {
     setCepLoading(true)
@@ -619,6 +635,15 @@ export default function AdminForm({ id }: { id?: string }) {
                   className="relative aspect-square overflow-hidden rounded-2xl border border-border"
                 >
                   <img src={image.url} alt="" className="size-full object-cover" loading="lazy" />
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteImage(image)}
+                    disabled={deleteImage.isPending}
+                    className="absolute left-1.5 top-1.5 rounded-full bg-black/60 p-1 text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+                    aria-label="Remover imagem"
+                  >
+                    <X size={12} />
+                  </button>
                 </div>
               ))}
             </div>

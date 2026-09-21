@@ -54,6 +54,12 @@ conectado ao backend via REST. Mais detalhes em FRONTEND.md.
 - Auth: sessao via localStorage (toque.token e toque.user); expiração do JWT checada no boot
   (authService.getUser) e 401 limpa a sessao + evento 'toque:session-expired' (useAuth escuta)
 - Cadastro exige confirmacao de senha (front zod superRefine + backend userService)
+- Aprovacao de usuarios (21-09): registro cria conta (isApproved=false) SEM sessao (painel
+  "aguardando aprovacao"); login de nao-aprovado retorna 403; CRUD/upload/deletar imagem de
+  /property so para logado + aprovado (authMiddleware + requireApproved); GET /user e
+  PATCH /user/:id/approve so para aprovados; AdminDashboard ganhou secao "Usuarios"
+  (lista todos, badge Aprovado/Pendente + botao Aprovar com confirmacao em toast);
+  hash de senha removido das respostas de create/login; 1o usuario aprovado via banco de dados
 
 ## Convencoes
 - Comentarios em portugues

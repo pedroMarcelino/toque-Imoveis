@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema(
         name: {
             type: String,
             trim: true
+        },
+
+        isApproved: {
+            type: Boolean,
+            default: false
         }
     },
     {

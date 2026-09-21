@@ -26,6 +26,7 @@ export const authUserSchema = z.object({
   _id: z.string(),
   name: z.string().optional(),
   email: z.string(),
+  isApproved: z.boolean().optional(),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
 })
@@ -34,6 +35,11 @@ export const authResponseSchema = z.object({
   message: z.string(),
   user: authUserSchema,
   token: z.string(),
+})
+
+export const registerResponseSchema = z.object({
+  message: z.string(),
+  user: authUserSchema,
 })
 
 export type RegisterInput = z.infer<typeof registerSchema>

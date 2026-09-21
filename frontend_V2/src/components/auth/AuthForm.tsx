@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'wouter'
-import { Eye, EyeOff, LogIn, UserPlus } from 'lucide-react'
+import { Eye, EyeOff, LogIn, UserPlus, Clock3 } from 'lucide-react'
 import { toast } from 'sonner'
 import Brand from '../layout/Brand'
 import { Button } from '../ui/Button'
@@ -26,6 +26,7 @@ interface AuthFormProps {
 
 export default function AuthForm({ onSuccess, defaultMode = 'login' }: AuthFormProps) {
   const [mode, setMode] = useState<Mode>(defaultMode)
+  const [registered, setRegistered] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -36,6 +37,7 @@ export default function AuthForm({ onSuccess, defaultMode = 'login' }: AuthFormP
   const switchMode = (next: Mode) => {
     if (next === mode) return
     setMode(next)
+    setRegistered(false)
     setPassword('')
     setConfirmPassword('')
   }
@@ -67,17 +69,40 @@ export default function AuthForm({ onSuccess, defaultMode = 'login' }: AuthFormP
 
     setLoading(true)
     try {
-      const user =
-        mode === 'login'
-          ? await login(parsed.data as LoginInput)
-          : await register(parsed.data as RegisterInput)
-      toast.success(mode === 'login' ? 'Login realizado' : 'Conta criada')
-      onSuccess(user)
+      if (mode === 'login') {
+        const user = await login(parsed.data as LoginInput)
+        toast.success('Login realizado')
+        onSuccess(user)
+      } else {
+        await register(parsed.data as RegisterInput)
+        setRegistered(true)
+      }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Erro na autenticação')
     } finally {
       setLoading(false)
     }
+  }
+
+  if (registered) {
+    return (
+      <div className="surface w-full max-w-md rounded-3xl p-8 text-center sm:p-9">
+        <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <Clock3 size={28} />
+        </div>
+        <h1 className="mt-6 font-display text-2xl font-semibold">Conta criada!</h1>
+        <p className="mt-3 text-sm leading-relaxed text-slate-500">
+          Sua conta foi cadastrada e está aguardando a aprovação de um profissional.
+          Assim que for aprovada, você poderá acessar a área profissional.
+        </p>
+        <Button size="lg" onClick={() => switchMode('login')} className="mt-8 w-full">
+          <LogIn size={17} /> Ir para o login
+        </Button>
+        <Link href="/" className="mt-5 block text-center text-sm font-semibold text-primary">
+          Voltar ao site
+        </Link>
+      </div>
+    )
   }
 
   return (

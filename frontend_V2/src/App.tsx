@@ -8,11 +8,13 @@ import Detail from './pages/Detail'
 import Admin from './pages/Admin'
 import AdminForm from './pages/AdminForm'
 import NotFound from './pages/NotFound'
+import PendingApproval from './components/auth/PendingApproval'
 import { useAuth } from './hooks/useAuth'
 
 function ProtectedAdmin({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth()
+  const { user, isAuthenticated, logout } = useAuth()
   if (!isAuthenticated) return <Redirect to="/admin" />
+  if (user && !user.isApproved) return <PendingApproval onLogout={logout} />
   return <>{children}</>
 }
 

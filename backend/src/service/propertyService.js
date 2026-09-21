@@ -169,6 +169,27 @@ class propertyService {
         return property;
     }
 
+    async deletePropertyImage(idProperty, imageId) {
+        const property = await Property.findById(idProperty);
+
+        if (!property) {
+            throw new AppError('Imóvel não encontrado', '404', 'propertyService.deletePropertyImage');
+        }
+
+        const image = property.images.id(imageId);
+
+        if (!image) {
+            throw new AppError('Imagem não encontrada', '404', 'propertyService.deletePropertyImage');
+        }
+
+        await cloudinary.uploader.destroy(image.publicId);
+
+        property.images.pull(image._id);
+        await property.save();
+
+        return property;
+    }
+
 
 }
 

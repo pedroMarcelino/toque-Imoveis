@@ -1,6 +1,6 @@
 import { api, setToken, clearToken, getToken } from '../api/http'
 import type { AuthUser, RegisterInput, LoginInput } from '../types/auth'
-import { authResponseSchema } from '../types/auth'
+import { authResponseSchema, registerResponseSchema } from '../types/auth'
 import { STORAGE_KEYS } from '../config'
 
 function persistUser(user: AuthUser): AuthUser {
@@ -36,9 +36,8 @@ export async function login(input: LoginInput): Promise<AuthUser> {
 
 export async function register(input: RegisterInput): Promise<AuthUser> {
   const data = await api.post<unknown>('/user', input)
-  const parsed = authResponseSchema.parse(data)
-  setToken(parsed.token)
-  return persistUser(parsed.user)
+  const parsed = registerResponseSchema.parse(data)
+  return parsed.user
 }
 
 export function getUser(): AuthUser | null {

@@ -88,6 +88,21 @@ class propertyController {
         }
     }
 
+    async deleteImage(req, res) {
+        try {
+            const { id, imageId } = req.params;
+
+            const property = await propertyService.deletePropertyImage(id, imageId);
+
+            return res.status(200).json(property);
+        } catch (error) {
+            return res.status(error.statusCode || 500).json({
+                error: error.message,
+                source: error.source || 'propertyController.deleteImage'
+            });
+        }
+    }
+
 }
 
 export default new propertyController();
