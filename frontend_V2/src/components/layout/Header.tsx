@@ -1,8 +1,11 @@
 import { Link } from 'wouter'
 import Brand from './Brand'
 import MobileMenu from './MobileMenu'
+import { useAuth } from '../../hooks/useAuth'
 
 export default function Header() {
+  const { isAuthenticated } = useAuth()
+
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background">
       <div className="container flex h-16 items-center justify-between md:h-20">
@@ -11,6 +14,11 @@ export default function Header() {
           <Link href="/" className="hover:text-primary">
             Início
           </Link>
+          {isAuthenticated && (
+            <Link href="/admin/usuarios" className="hover:text-primary">
+              Usuários
+            </Link>
+          )}
           <a href="/#contato" className="hover:text-primary">
             Contato
           </a>

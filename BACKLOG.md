@@ -25,7 +25,8 @@
 - [ ] Limpar import morto de auth.routes.js no index de rotas
 - [x] Frontend: página de criação e gestão de imóveis (AdminForm + AdminDashboard) — feito em 15-09
 - [x] Frontend: deletar imagem de imóvel (DELETE /property/:id/images/:imageId + X nas fotos do AdminForm) — feito em 21-09
-- [x] Frontend: seção Usuários (aprovar cadastros) no AdminDashboard — feito em 21-09
+- [x] Frontend: seção Usuários movida para página dedicada /admin/usuarios com link no navbar
+      (visível para logados) e atalho no AdminDashboard — feito em 21-09
 - [ ] Frontend: montar telas de catálogo, detalhe (galeria com mais de 3 fotos) e home
       consumindo o backend (hoje "em construção")
 

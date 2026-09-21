@@ -60,6 +60,9 @@ conectado ao backend via REST. Mais detalhes em FRONTEND.md.
   PATCH /user/:id/approve so para aprovados; AdminDashboard ganhou secao "Usuarios"
   (lista todos, badge Aprovado/Pendente + botao Aprovar com confirmacao em toast);
   hash de senha removido das respostas de create/login; 1o usuario aprovado via banco de dados
+- Secao "Usuarios" movida para pagina dedicada /admin/usuarios (Users.tsx, protegida por login
+  + aprovado); link "Usuarios" no navbar (Header desktop + MobileMenu) visivel so para logados;
+  AdminDashboard mantem atalho "Usuarios" ao lado de "Novo imovel" - feito 21-09
 
 ## Convencoes
 - Comentarios em portugues

@@ -7,6 +7,7 @@ import Catalog from './pages/Catalog'
 import Detail from './pages/Detail'
 import Admin from './pages/Admin'
 import AdminForm from './pages/AdminForm'
+import Users from './pages/Users'
 import NotFound from './pages/NotFound'
 import PendingApproval from './components/auth/PendingApproval'
 import { useAuth } from './hooks/useAuth'
@@ -44,6 +45,13 @@ function App() {
             )}
           </Route>
           <Route path="/admin/dashboard">{() => <Admin />}</Route>
+          <Route path="/admin/usuarios">
+            {() => (
+              <ProtectedAdmin>
+                <Users />
+              </ProtectedAdmin>
+            )}
+          </Route>
           <Route component={NotFound} />
         </Switch>
       </main>

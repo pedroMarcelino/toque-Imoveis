@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { Link } from 'wouter'
 import { Menu, X } from 'lucide-react'
 import { cn } from '../../lib/cn'
+import { useAuth } from '../../hooks/useAuth'
 
 const NAV_ITEMS = [
   { label: 'Início', href: '/' },
@@ -11,6 +12,15 @@ const NAV_ITEMS = [
 
 export default function MobileMenu() {
   const [open, setOpen] = useState(false)
+  const { isAuthenticated } = useAuth()
+
+  const items = isAuthenticated
+    ? [
+        NAV_ITEMS[0],
+        { label: 'Usuários', href: '/admin/usuarios' },
+        NAV_ITEMS[1],
+      ]
+    : NAV_ITEMS
 
   return (
     <>
@@ -44,7 +54,7 @@ export default function MobileMenu() {
                 <X size={20} />
               </button>
               <nav className="flex flex-col gap-1">
-                {NAV_ITEMS.map((item) => (
+                {items.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}

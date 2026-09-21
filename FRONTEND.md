@@ -30,6 +30,7 @@ Qualquer usuário autenticado é tratado como administrador.
   - `Admin.tsx` - gate de autenticação (login/registro) para a área profissional
   - `AdminDashboard.tsx` - gestão de imóveis (lista status=todos, editar, excluir com confirmação, novo)
   - `AdminForm.tsx` - criar/editar imóvel + upload de imagens (multi, Cloudinary)
+  - `Users.tsx` - aprovação de usuários registrados (lista, badge Aprovado/Pendente, botão Aprovar)
   - `NotFound.tsx` - 404
 - `components/layout/` - Brand, Header, Footer
 - `components/property/` - PropertyCard, SearchBar, EmptyState
@@ -48,12 +49,15 @@ Qualquer usuário autenticado é tratado como administrador.
 | `/admin/novo` | AdminForm (criar imóvel) — requer login |
 | `/admin/editar/:id` | AdminForm (editar imóvel) — requer login |
 | `/admin/dashboard` | Admin |
+| `/admin/usuarios` | Users (aprovação de cadastros) — requer login |
 | qualquer outra | NotFound |
 
 ## Convenções
 - Texto/UI em pt-BR; dinheiro via `formatBRL` (Intl.NumberFormat `pt-BR`, BRL).
 - Campos do backend em inglês (label() traduz para exibição).
-- Autenticação: qualquer usuário logado tem acesso à área profissional.
+- Autenticação: qualquer usuário logado tem acesso à área profissional; registro não loga
+  (aguarda aprovação); login bloqueia 403 até o usuário ser aprovado; entradas de escrita
+  (imóveis) e a página de Usuários exigem `isApproved=true`.
 - Upload de imagens: `PATCH /property/:id/images`, form-data com campo `images`,
   header `Authorization: Bearer <token>`.
 - Valores numéricos (preço, área, quartos etc.) vindos do backend são tratados
