@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import User from '../model/User.js';
 import { signToken } from '../util/token.js';
 import { AppError } from '../util/appError.js';
+import { isValidId } from '../util/isValidId.js';
 
 // remove campos sensiveis antes de serializar o usuario
 function toSafeUser(user) {
@@ -67,6 +68,10 @@ class userService {
     }
 
     async approveUser(id) {
+        if (!isValidId(id)) {
+            throw new AppError('ID de usuário inválido', '400', 'userService.approveUser');
+        }
+
         const user = await User.findByIdAndUpdate(
             id,
             { isApproved: true },

@@ -1,5 +1,6 @@
 import streamifier from 'streamifier';
 import { AppError } from "../util/appError.js";
+import { isValidId } from "../util/isValidId.js";
 import Property from '../model/Property.js';
 import cloudinary from '../config/cloudinary.js';
 
@@ -17,10 +18,13 @@ class propertyService {
 
     async getProperty({ idProperty }) {
         try {
+            if (!isValidId(idProperty)) {
+                throw new AppError('ID de imóvel inválido', '400', 'propertyService.getProperty');
+            }
             const property = await Property.findById(idProperty);
             return property
         } catch (error) {
-            throw new AppError(error.message, '403', 'propertyService.getProperty')
+            throw new AppError(error.message, error.statusCode || '403', 'propertyService.getProperty')
         }
     }
 
@@ -96,6 +100,9 @@ class propertyService {
 
     async updateProperty(id, data) {
         try {
+            if (!isValidId(id)) {
+                throw new AppError('ID de imóvel inválido', '400', 'propertyService.updateProperty');
+            }
             const property = await Property.findByIdAndUpdate(id, data,
                 { new: true }
             );
@@ -112,6 +119,9 @@ class propertyService {
 
     async deleteProperty(id) {
         try {
+            if (!isValidId(id)) {
+                throw new AppError('ID de imóvel inválido', '400', 'propertyService.deleteProperty');
+            }
             const property = await Property.findByIdAndDelete(id);
 
             if (!property) {
@@ -127,6 +137,10 @@ class propertyService {
     async uploadPropertyImages(id, files) {
         if (!files || files.length === 0) {
             throw new AppError('Nenhuma imagem enviada', '400', 'propertyService.uploadPropertyImages');
+        }
+
+        if (!isValidId(id)) {
+            throw new AppError('ID de imóvel inválido', '400', 'propertyService.uploadPropertyImages');
         }
 
         const property = await Property.findById(id);
@@ -170,6 +184,13 @@ class propertyService {
     }
 
     async deletePropertyImage(idProperty, imageId) {
+        if (!isValidId(idProperty)) {
+            throw new AppError('ID de imóvel inválido', '400', 'propertyService.deletePropertyImage');
+        }
+        if (!isValidId(imageId)) {
+            throw new AppError('ID de imagem inválido', '400', 'propertyService.deletePropertyImage');
+        }
+
         const property = await Property.findById(idProperty);
 
         if (!property) {

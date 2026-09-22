@@ -68,8 +68,6 @@ class propertyController {
     }
     async uploadImages(req, res) {
         try {
-            console.log(req.files);
-
             const { id } = req.params;
 
             const property = await propertyService.uploadPropertyImages(

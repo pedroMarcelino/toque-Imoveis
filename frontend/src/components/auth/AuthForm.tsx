@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'wouter'
-import { Eye, EyeOff, LogIn, UserPlus, Clock3 } from 'lucide-react'
+import { Eye, EyeOff, LogIn, UserPlus, Clock3, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import Brand from '../layout/Brand'
 import { Button } from '../ui/Button'
@@ -203,7 +203,11 @@ export default function AuthForm({ onSuccess, defaultMode = 'login' }: AuthFormP
         )}
 
         <Button type="submit" size="lg" disabled={!canSubmit || loading} className="w-full">
-          {mode === 'login' ? (
+          {loading ? (
+            <>
+              <Loader2 size={17} className="animate-spin" /> Carregando...
+            </>
+          ) : mode === 'login' ? (
             <>
               <LogIn size={17} /> Entrar
             </>

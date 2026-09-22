@@ -25,6 +25,7 @@ import {
 } from '../hooks/useProperties'
 import { label } from '../lib/labels'
 import { buscarCep, formatCep, sanitizeCep } from '../lib/cep'
+import { formatCurrencyInput, parseCurrencyInput } from '../lib/currency'
 
 interface FormState {
   title: string
@@ -83,7 +84,7 @@ function toFormState(property: Property): FormState {
     type: property.type,
     purpose: property.purpose,
     status: property.status,
-    price: String(property.price ?? ''),
+    price: formatCurrencyInput(String(Math.round(Number(property.price ?? 0) * 100))),
     area: String(property.area ?? ''),
     bedrooms: String(property.bedrooms ?? 0),
     suites: String(property.suites ?? 0),
@@ -109,7 +110,7 @@ function toPayload(form: FormState): PropertyInput {
     type: form.type as PropertyInput['type'],
     purpose: form.purpose as PropertyInput['purpose'],
     status: form.status as PropertyInput['status'],
-    price: Number(form.price),
+    price: parseCurrencyInput(form.price),
     area: Number(form.area),
     bedrooms: Number(form.bedrooms || 0),
     suites: Number(form.suites || 0),
@@ -408,12 +409,12 @@ export default function AdminForm({ id }: { id?: string }) {
                 <Label htmlFor="price">Preço</Label>
                 <Input
                   id="price"
-                  type="number"
-                  min={0}
-                  step="any"
+                  type="text"
+                  inputMode="decimal"
                   placeholder="0,00"
+                  maxLength={18}
                   value={form.price}
-                  onChange={(e) => setField('price')(e.target.value)}
+                  onChange={(e) => setField('price')(formatCurrencyInput(e.target.value))}
                 />
                 <FieldError message={form.price.trim() && currentErrors.price ? currentErrors.price : undefined} />
               </div>
